@@ -146,8 +146,10 @@ TreeNode* constructBST(TreeNode* root, int val) {
     
     if(val<root->data)
         root->left = constructBST(root->left, val);
-    else
+    else if(val>root->data)
         root->right = constructBST(root->right, val);
+    else
+        return root;
 
     return root;
 }
