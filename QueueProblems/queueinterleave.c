@@ -1,5 +1,4 @@
-#include "queue.c"
-#include "stack.c"
+#include "QueueUsing2Stacks.c"
 
 void interleave(Queue* queue) {
     Stack* stack = create_stack(queue->size);
