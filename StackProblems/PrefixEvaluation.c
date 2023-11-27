@@ -1,5 +1,6 @@
 #include "stack.c"
 #include <string.h>
+#include <math.h>
 
 bool is_operator(char op) {
     switch(op) {
@@ -25,7 +26,7 @@ int evaluate(int left, char operator, int right) {
         case '/':
             return left / right;
         case '^':
-            return left ^ right;
+            return pow(left,right);
     }
 }
 
