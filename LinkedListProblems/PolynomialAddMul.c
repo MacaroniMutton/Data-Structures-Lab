@@ -15,6 +15,29 @@ PolyNode* create_node(int coeff, int power) {
     node->next = NULL;
 }
 
+PolyNode* deleteDuplicates(PolyNode* head) {
+    if(head==NULL || head->next==NULL || head->next->next==NULL)
+        return head;
+    PolyNode* temp1 = head->next;
+    PolyNode* temp2 = head->next->next;
+    int sum = temp1->coeff;
+    while(temp2!=NULL) {
+        if(temp1->power!=temp2->power) {
+            temp1->next = temp2;
+            temp1->coeff = sum;
+            temp1 = temp2;
+            sum = temp1->coeff;
+            temp2 = temp2->next;
+            continue;
+        }
+        sum += temp2->coeff;
+        temp2 = temp2->next;
+    }
+    temp1->next = temp2;
+    temp1->coeff = sum;
+    return head;
+}
+
 void insert(PolyNode* head, int coeff, int power) {
     if(head==NULL) {
         head = create_node(0, 0);
@@ -39,6 +62,7 @@ void insert(PolyNode* head, int coeff, int power) {
             newNode->next = curr;
         }
     }
+    deleteDuplicates(head);
 }
 
 void display(PolyNode* head) {
@@ -95,17 +119,71 @@ PolyNode* addPoly(PolyNode* p1, PolyNode* p2) {
     return ans;
 }
 
+int swap(int* x, int* y) {
+    int temp = *x;
+    *x = *y;
+    *y = temp;
+}
+
+void sort(PolyNode* head) {
+    int n = 0;
+    PolyNode* temp = head->next;
+    while(temp!=NULL) {
+        n++;
+        temp = temp->next;
+    }
+    for(int i = 0; i<n-1; i++) {
+        PolyNode* tempj = head->next;
+        for(int j = 0; j<n-1-i; j++) {
+            PolyNode* node1 = tempj;
+            PolyNode* node2 = tempj->next;
+            if(node1->power<node2->power) {
+                swap(&node1->power, &node2->power);
+                swap(&node1->coeff, &node2->coeff);
+            }
+            tempj = tempj->next;
+        }
+    }
+}
+
+
+
+PolyNode* multiplyPoly(PolyNode* p1, PolyNode* p2) {
+    PolyNode* ans = create_node(0, 0);
+    PolyNode* anstemp = ans;
+    PolyNode* temp1 = p1->next;
+    while(temp1!=NULL) {
+        PolyNode* temp2 = p2->next;
+        while(temp2!=NULL) {
+            PolyNode* newNode = create_node(temp1->coeff*temp2->coeff, temp1->power+temp2->power);
+            anstemp->next = newNode;
+            anstemp = newNode;
+            temp2 = temp2->next;
+        }
+        temp1 = temp1->next;
+    }
+    sort(ans);
+    deleteDuplicates(ans);
+    return ans;
+}
+
 int main() {
     PolyNode* p1 = create_node(0, 0);
     insert(p1, 2, 2);
     insert(p1, 3, 1);
     insert(p1, 7, 5);
+    insert(p1, 5, 5);
+    insert(p1, 3, 1);
+    insert(p1, 3, 3);
+    insert(p1, 3, 5);
     display(p1);
-    PolyNode* p2 = create_node(0, 0);
-    insert(p2, 6, 2);
-    insert(p2, 3, 7);
-    insert(p2, 2, 5);
-    display(p2);
-    PolyNode* sum = addPoly(p1, p2);
-    display(sum);
+    // PolyNode* p2 = create_node(0, 0);
+    // insert(p2, 6, 2);
+    // insert(p2, 3, 7);
+    // insert(p2, 2, 5);
+    // display(p2);
+    // PolyNode* sum = addPoly(p1, p2);
+    // display(sum);
+    // PolyNode* product = multiplyPoly(p1, p2);
+    // display(product);
 }
