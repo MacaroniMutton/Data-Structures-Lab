@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class modExpo {
+    public static int k = 0;
     public static int modularExp(int b, int[] bi, int m){
         int res = 1;
         int power = b % m;
@@ -17,18 +18,14 @@ public class modExpo {
         int[] binary;
         binary = new int[size];
         int[] temp = new int[size];
-        int i = 0;
+
         while(num != 0){
-            temp[i] = num % 2;
+            temp[k] = num % 2;
             num = num / 2;
-            i++;
-        }
-        int k = 0;
-        for(int j = i;  j>= 0; j--){
-            binary[k] = temp[j];
             k++;
         }
-        return binary;
+
+        return temp;
     }
 
     public static void main(String[] args) {
@@ -42,7 +39,7 @@ public class modExpo {
         int[] bin ;
         bin = intToBin(expo);
         System.out.print("Binary of " + expo + " = ");
-        for(int i =0; i < bin.length; i++){
+        for(int i =k; i >= 0; i--){
             System.out.print(bin[i]);
         }
         System.out.println();
